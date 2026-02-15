@@ -1,0 +1,38 @@
+# Dependencies
+**/node_modules/
+
+# Environment variables
+**/.env
+**/.env.local
+**/.env*.local
+
+# Next.js build output
+task-manager-frontend/.next/
+task-manager-frontend/out/
+task-manager-frontend/build/
+
+# Prisma
+task-manager-backend/prisma/migrations/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+
+# IDE
+.vscode/
+.idea/
+*.sublime-*
+
+# Testing
+coverage/
+
+# Build
+dist/
+build/
