@@ -3,24 +3,23 @@ const express = require('express');
 const cors = require('cors');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
+// Routes
+const userRoutes = require('./routes/userRoutes');
+const taskRoutes = require('./routes/taskRoutes');
 
-// Test route
+app.use('/api/users', userRoutes);
+app.use('/api/tasks', taskRoutes);  // Add this
+
 app.get('/', (req, res) => {
   res.json({ message: 'Task Manager API is running!' });
 });
 
-// Import and use routes
-const userRoutes = require('./routes/userRoutes');
-app.use('/api/users', userRoutes);
-
-// Start server
 app.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
-  console.log(`✅ Database connected on port 5433`);
 });
