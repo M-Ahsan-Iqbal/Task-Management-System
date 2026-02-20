@@ -21,7 +21,7 @@ exports.getTask = async (req, res) => {
   try {
     const { id } = req.params;
     const task = await prisma.task.findUnique({
-      where: { id: pareseInt(id) },
+      where: { id: parseInt(id) },
     });
     if (!task) {
       return res.status(404).json({ error: "Task not found" });
@@ -57,7 +57,7 @@ exports.updateTask = async (req, res) => {
         const { id } = req.params;
         const { title, description, status, priority, dueDate } = req.body;
         const task = await prisma.task.update({
-            where: { id: parseInt(id) },
+          where: { id: parseInt(id) },
             data: {
                 title,
                 description,

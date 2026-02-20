@@ -76,13 +76,13 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen p-8 bg-gray-50">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8">Task Dashboard</h1>
+        <h1 className="text-4xl font-bold mb-8 text-gray-800">Task Dashboard</h1>
         {/* create task form */}
         <div className="bg-white p-6 rounded-lg shadow-md mb-8">
-          <h2 className="text-2xl font-semibold mb-4">Create New Task</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800">Create New Task</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium mb-1">Title</label>
+              <label className="block text-sm font-medium mb-1 text-gray-800">Title</label>
               <input
                 type="text"
                 required
@@ -90,11 +90,11 @@ export default function Dashboard() {
                 onChange={(e) =>
                   setFormData({ ...formData, title: e.target.value })
                 }
-                className="w-full px-3 py-2 border rounded-md"
+                className="w-full px-3 py-2 border rounded-md text-gray-800"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">
+              <label className="block text-sm font-medium mb-1 text-gray-800">
                 Description
               </label>
               <textarea
@@ -102,19 +102,19 @@ export default function Dashboard() {
                 onChange={(e) =>
                   setFormData({ ...formData, description: e.target.value })
                 }
-                className="w-full px-3 py-2 border rounded-md"
+                className="w-full px-3 py-2 border rounded-md text-gray-800"
                 rows="3"
               />
             </div>
             <div className="grid grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Status</label>
+                <label className="block text-sm font-medium mb-1 text-gray-800">Status</label>
                 <select
                   value={formData.status}
                   onChange={(e) =>
                     setFormData({ ...formData, status: e.target.value })
                   }
-                  className="w-full px-3 py-2 border rounded-md"
+                  className="w-full px-3 py-2 border rounded-md text-gray-800"
                 >
                   <option value="pending">Pending</option>
                   <option value="in-progress">In Progress</option>
@@ -122,7 +122,7 @@ export default function Dashboard() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">
+                <label className="block text-sm font-medium mb-1 text-gray-800">
                   Priority
                 </label>
                 <select
@@ -130,7 +130,7 @@ export default function Dashboard() {
                   onChange={(e) =>
                     setFormData({ ...formData, priority: e.target.value })
                   }
-                  className="w-full px-3 py-2 border rounded-md"
+                  className="w-full px-3 py-2 border rounded-md text-gray-800"
                 >
                   <option value="low">Low</option>
                   <option value="medium">Medium</option>
@@ -138,7 +138,7 @@ export default function Dashboard() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">
+                <label className="block text-sm font-medium mb-1 text-gray-800">
                   Due Date
                 </label>
                 <input
@@ -147,7 +147,7 @@ export default function Dashboard() {
                   onChange={(e) =>
                     setFormData({ ...formData, dueDate: e.target.value })
                   }
-                  className="w-full px-3 py-2 border rounded-md"
+                  className="w-full px-3 py-2 border rounded-md text-gray-800"
                 />
               </div>
             </div>
@@ -162,11 +162,11 @@ export default function Dashboard() {
 
         {/* Tasks List */}
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h2 className="text-2xl font-semibold mb-4">Your Tasks</h2>
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800">Your Tasks</h2>
           {loading ? (
             <p>Loading...</p>
           ) : tasks.length === 0 ? (
-            <p>No tasks yet. Create one above!</p>
+            <p className="text-gray-800">No tasks yet. Create one above!</p>
           ) : (
             <div className="space-y-3">
               {tasks.map((task) => (

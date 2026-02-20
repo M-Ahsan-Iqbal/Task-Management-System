@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:3000/api";
+const API_BASE_URL = "http://localhost:4000/api";
 
 
 export const taskAPI = {
@@ -18,7 +18,7 @@ export const taskAPI = {
 
   // create a new task
   createTask: async (taskData) => {
-    const response = await axios.post(`${API_BASE_URL}/tasks`, taskData);
+    const response = await axios.post(`${API_BASE_URL}/tasks/createtask`, taskData);
     return response.data;
   },
 
