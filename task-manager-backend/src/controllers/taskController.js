@@ -36,6 +36,12 @@ exports.getTask = async (req, res) => {
 exports.createTask = async (req, res) => {
   try {
     const { title, description, status, priority, dueDate, userId } = req.body;
+    const existingUser = await prisma.user.findUnique({
+      where: { id: parseInt(userId) },
+    });
+    if (!existingUser) {
+      return res.status(400).json({ error: `User Id ${userId} not found` });
+    }
     const task = await prisma.task.create({
       data: {
         title,
@@ -52,6 +58,7 @@ exports.createTask = async (req, res) => {
   }
 };
 
+// update task
 exports.updateTask = async (req, res) => {
     try {
         const { id } = req.params;
@@ -72,6 +79,7 @@ exports.updateTask = async (req, res) => {
     }
 };
 
+// delete task
 exports.deleteTask = async (req, res) => {
     try {
         const { id } = req.params;
