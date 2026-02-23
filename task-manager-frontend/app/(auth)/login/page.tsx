@@ -11,7 +11,7 @@ export default function LoginPage() {
   const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
-      const response =await authService.login(formData);
+      const response = await authService.login(formData);
       console.log("login response:", response);
     } catch (error) {
       console.error("Login failed invalid credentials:", error);
