@@ -1,32 +1,30 @@
-'use client';
+"use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authService } from "@/services/authService";
-import { useActionState } from 'react';
+import { useActionState } from "react";
 
 type LoginState = {
   error: string | null;
   success: string | null;
 };
 
-
 export default function LoginPage() {
   const router = useRouter();
 
-  const [state, formAction, isPending] = useActionState<
-  LoginState,
-  FormData
->(
+  const [state, formAction, isPending] = useActionState<LoginState, FormData>(
     loginAction,
     {
       error: null,
       success: null,
-    }
+    },
   );
 
   // Action function
-  async function loginAction(prevState: LoginState, formData: FormData): Promise<LoginState> {
+  async function loginAction(
+    prevState: LoginState,
+    formData: FormData,
+  ): Promise<LoginState> {
     try {
       const response = await authService.login(formData);
 
@@ -39,7 +37,6 @@ export default function LoginPage() {
         error: null,
         success: "Login successful!",
       };
-
     } catch (error) {
       console.error("Login failed:", error);
 
@@ -56,7 +53,6 @@ export default function LoginPage() {
         <h2 className="text-2xl font-bold mb-6 text-center">Login</h2>
 
         <form action={formAction} className="space-y-4">
-
           {state?.error && (
             <p className="text-red-500 text-sm">{state.error}</p>
           )}
@@ -66,9 +62,7 @@ export default function LoginPage() {
           )}
 
           <div>
-            <label className="block text-sm font-medium mb-1">
-              Email
-            </label>
+            <label className="block text-sm font-medium mb-1">Email</label>
             <input
               name="email"
               type="email"
@@ -78,9 +72,7 @@ export default function LoginPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">
-              Password
-            </label>
+            <label className="block text-sm font-medium mb-1">Password</label>
             <input
               name="password"
               type="password"
@@ -94,9 +86,8 @@ export default function LoginPage() {
             type="submit"
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 transition duration-200"
           >
-            {isPending ? 'Loading...' : 'Login'}
+            {isPending ? "Loading..." : "Login"}
           </button>
-
         </form>
       </div>
     </div>

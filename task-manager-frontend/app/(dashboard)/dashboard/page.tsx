@@ -3,8 +3,18 @@
 import { useState, useEffect } from "react";
 import { taskAPI } from "@/services/taskAPI";
 
+interface Task {
+  id: number;
+  title: string;
+  description: string;
+  status: string;
+  priority: string;
+  dueDate: string;
+  userId: number;
+}
+
 export default function Dashboard() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     title: "",
@@ -33,7 +43,7 @@ export default function Dashboard() {
   };
 
   // handle submit Create Task
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
     e.preventDefault();
     try {
       await taskAPI.createTask(formData);
@@ -52,7 +62,7 @@ export default function Dashboard() {
   };
 
   // delete task
-  const handleDelete = async (id) => {
+  const handleDelete = async (id: number) => {
     if (confirm("Are you sure you want to delete this task?")) {
       try {
         await taskAPI.deleteTask(id);
@@ -64,7 +74,7 @@ export default function Dashboard() {
   };
 
   // update task status
-  const handleStatusChange = async (id, newStatus) => {
+  const handleStatusChange = async (id: number, newStatus: string) => {
     try {
       await taskAPI.updateTask(id, { status: newStatus });
       fetchTasks();
@@ -78,7 +88,7 @@ export default function Dashboard() {
       <div className="max-w-6xl mx-auto">
         <h1 className="text-4xl font-bold mb-8 text-gray-800">Task Dashboard</h1>
         {/* create task form */}
-        <div className="bg-white p-6 rounded-lg shadow-md mb-8">
+        <div className="bg-white p-6 rounded-lg shadow-md mb-8 border-green-700 border">
           <h2 className="text-2xl font-semibold mb-4 text-gray-800">Create New Task</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
@@ -103,7 +113,7 @@ export default function Dashboard() {
                   setFormData({ ...formData, description: e.target.value })
                 }
                 className="w-full px-3 py-2 border rounded-md text-gray-800"
-                rows="3"
+                rows={3}
               />
             </div>
             <div className="grid grid-cols-3 gap-4">
@@ -153,7 +163,7 @@ export default function Dashboard() {
             </div>
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 cursor-pointer"
+              className="w-auto px-5 bg-green-600 text-white py-2 rounded-md hover:bg-green-700 cursor-pointer"
             >
               Create Task
             </button>
