@@ -4,15 +4,11 @@ import { useRouter } from "next/navigation";
 import { authService } from "@/services/authService";
 import { useActionState } from "react";
 
-type LoginState = {
-  error: string | null;
-  success: string | null;
-};
 
 export default function LoginPage() {
   const router = useRouter();
 
-  const [state, formAction, isPending] = useActionState<LoginState, FormData>(
+  const [state, formAction, isPending] = useActionState<FormState, FormData>(
     loginAction,
     {
       error: null,
@@ -22,12 +18,13 @@ export default function LoginPage() {
 
   // Action function
   async function loginAction(
-    prevState: LoginState,
+    prevState: FormState,
     formData: FormData,
-  ): Promise<LoginState> {
+  ): Promise<FormState> {
     try {
       const email = formData.get("email") as string;
       const password = formData.get("password") as string;
+      const rememberMe = formData.get("checkbox") as string === "on";
       const response = await authService.login({ email, password });
 
       console.log("login response:", response);
@@ -104,7 +101,7 @@ export default function LoginPage() {
                 type="email"
                 required
                 placeholder="you@example.com"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl text-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 outline-none"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl text-gray-800 focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 outline-none"
               />
             </div>
           </div>
@@ -125,7 +122,7 @@ export default function LoginPage() {
                 type="password"
                 required
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl text-gray-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 outline-none"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl text-gray-800 focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 outline-none"
               />
             </div>
           </div>
@@ -133,10 +130,10 @@ export default function LoginPage() {
           {/* Remember Me & Forgot Password */}
           <div className="flex items-center justify-between text-sm">
             <label className="flex items-center">
-              <input type="checkbox" className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
+              <input type="checkbox" name="checkbox" className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500" />
               <span className="ml-2 text-gray-600">Remember me</span>
             </label>
-            <a href="#" className="text-blue-600 hover:text-blue-700 font-medium">
+            <a href="/forgotPassword" className="text-blue-600 hover:text-blue-700 font-medium">
               Forgot password?
             </a>
           </div>
@@ -198,8 +195,8 @@ export default function LoginPage() {
 
         {/* Sign Up Link */}
         <p className="mt-6 text-center text-sm text-gray-600">
-          Don't have an account?{' '}
-          <a href="/register" className="font-semibold text-blue-600 hover:text-blue-700">
+          Don&apos;t have an account?{' '}
+          <a href="/register" className="font-semibold text-green-600 hover:text-green-700">
             Sign up for free
           </a>
         </p>
