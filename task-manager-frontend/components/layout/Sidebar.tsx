@@ -58,7 +58,7 @@ export default function Sidebar() {
       >
         {/* Logo */}
         <div className="p-4 border-b">
-          <h1 className="text-xl font-bold text-green-600">
+          <h1 className="text-xl font-semibold text-green-600">
             Task Manager
           </h1>
         </div>
