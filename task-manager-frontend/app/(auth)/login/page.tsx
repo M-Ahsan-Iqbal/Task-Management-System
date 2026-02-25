@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { authService } from "@/services/authService";
 import { useActionState } from "react";
+import { cookies } from "next/headers";
 
 
 export default function LoginPage() {
@@ -26,6 +27,14 @@ export default function LoginPage() {
       const password = formData.get("password") as string;
       const rememberMe = formData.get("checkbox") as string === "on";
       const response = await authService.login({ email, password });
+      const token = response.token;
+
+      cookies().set("token", token, {
+        httpOnly: true,
+        secure: true,
+        path: "/",
+        maxRange: rememberMe ? 60 * 60 * 24 * 30 : undefined, // 30 days if rememberMe is true
+      });
 
       console.log("login response:", response);
 
