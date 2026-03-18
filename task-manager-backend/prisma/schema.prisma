@@ -12,9 +12,11 @@ model User {
   name      String
   email     String   @unique
   password  String
+  tasks     Task[]
+  agreed_to_terms     BOOLEAN   NOT NULL DEFAULT FALSE,
+  agreed_to_terms_at  TIMESTAMP NULL,
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  tasks     Task[]
 }
 
 model Task {

@@ -25,29 +25,29 @@ export default function RegisterPage() {
       const email = formData.get("email") as string;
       const password = formData.get("password") as string;
       const confirmPassword = formData.get("confirmPassword") as string;
+      const agreedToTerms = formData.get("agreedToTerms") === "on";
 
+      // Validate BEFORE hitting the DB
+      if (!agreedToTerms) {
+        return {
+          error: "You must agree to the terms and conditions",
+          success: null,
+        };
+      }
       if (password !== confirmPassword) {
-        throw new Error("Passwords do not match");
+        return { error: "Passwords do not match", success: null };
       }
 
-      const response = await authService.register({ name, email, password });
+      await authService.register({ name, email, password, agreedToTerms });
 
-      console.log("register response:", response);
-
-      // If login successful
       router.push("/login");
 
-      return {
-        error: null,
-        success: "Registration successful!",
-      };
+      return { error: null, success: "Registration successful!" };
     } catch (error) {
-      console.error("Registration failed:", error);
-
-      return {
-        error: "Registration failed",
-        success: null,
-      };
+      // Return the REAL error message, not a generic one
+      const message =
+        error instanceof Error ? error.message : "Registration failed";
+      return { error: message, success: null };
     }
   }
 
