@@ -1,55 +1,22 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { authService } from "@/services/authService";
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { loginAction } from "./action";
 
-export default function RegisterPage() {
+export default function LoginForm() {
   const router = useRouter();
 
   const [state, formAction, isPending] = useActionState<FormState, FormData>(
-    registerAction,
-    {
-      error: null,
-      success: null,
-    },
+    loginAction,
+    { error: null, success: null },
   );
 
-  // Action function
-  async function registerAction(
-    prevState: FormState,
-    formData: FormData,
-  ): Promise<FormState> {
-    try {
-      const name = formData.get("name") as string;
-      const email = formData.get("email") as string;
-      const password = formData.get("password") as string;
-      const confirmPassword = formData.get("confirmPassword") as string;
-      const agreedToTerms = formData.get("agreedToTerms") === "on";
-
-      // Validate BEFORE hitting the DB
-      if (!agreedToTerms) {
-        return {
-          error: "You must agree to the terms and conditions",
-          success: null,
-        };
-      }
-      if (password !== confirmPassword) {
-        return { error: "Passwords do not match", success: null };
-      }
-
-      await authService.register({ name, email, password, agreedToTerms });
-
-      router.push("/login");
-
-      return { error: null, success: "Registration successful!" };
-    } catch (error) {
-      // Return the REAL error message, not a generic one
-      const message =
-        error instanceof Error ? error.message : "Registration failed";
-      return { error: message, success: null };
+  useEffect(() => {
+    if (state?.success) {
+      router.push("/dashboard");
     }
-  }
+  }, [state]);
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 px-4">
@@ -67,15 +34,15 @@ export default function RegisterPage() {
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={2}
-                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
           </div>
           <h2 className="text-3xl font-bold text-gray-800 mb-2">
-            Create Account
+            Welcome Back
           </h2>
           <p className="text-gray-500 text-sm">
-            Sign up to get started for free
+            Sign in to your account to continue
           </p>
         </div>
 
@@ -124,38 +91,7 @@ export default function RegisterPage() {
             </div>
           )}
 
-          {/* Full Name */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Full Name
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg
-                  className="h-5 w-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
-                  />
-                </svg>
-              </div>
-              <input
-                name="name"
-                type="text"
-                required
-                placeholder="John Doe"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl text-gray-800 focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 outline-none"
-              />
-            </div>
-          </div>
-
-          {/* Email */}
+          {/* Email Input */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Email Address
@@ -186,7 +122,7 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          {/* Password */}
+          {/* Password Input */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Password
@@ -217,61 +153,22 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          {/* Confirm Password */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Confirm Password
-            </label>
-            <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <svg
-                  className="h-5 w-5 text-gray-400"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                </svg>
-              </div>
+          {/* Remember Me & Forgot Password */}
+          <div className="flex items-center justify-between text-sm">
+            <label className="flex items-center">
               <input
-                name="confirmPassword"
-                type="password"
-                required
-                placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl text-gray-800 focus:ring-2 focus:ring-green-500 focus:border-transparent transition duration-200 outline-none"
+                type="checkbox"
+                name="checkbox"
+                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
               />
-            </div>
-          </div>
-
-          {/* Terms & Conditions */}
-          <div className="flex items-start text-sm">
-            <input
-              name="agreedToTerms"
-              type="checkbox"
-              required
-              className="w-4 h-4 mt-0.5 text-green-600 border-gray-300 rounded focus:ring-green-500"
-            />
-            <span className="ml-2 text-gray-600">
-              I agree to the{" "}
-              <a
-                href="/terms"
-                className="text-green-600 hover:text-green-700 font-medium"
-              >
-                Terms of Service
-              </a>{" "}
-              and{" "}
-              <a
-                href="/privacy"
-                className="text-green-600 hover:text-green-700 font-medium"
-              >
-                Privacy Policy
-              </a>
-            </span>
+              <span className="ml-2 text-gray-600">Remember me</span>
+            </label>
+            <a
+              href="/forgotPassword"
+              className="text-blue-600 hover:text-blue-700 font-medium"
+            >
+              Forgot password?
+            </a>
           </div>
 
           {/* Submit Button */}
@@ -301,10 +198,10 @@ export default function RegisterPage() {
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                   ></path>
                 </svg>
-                Creating account...
+                Signing in...
               </span>
             ) : (
-              "Create Account"
+              "Sign In"
             )}
           </button>
         </form>
@@ -321,7 +218,7 @@ export default function RegisterPage() {
           </div>
         </div>
 
-        {/* Social Buttons */}
+        {/* Social Login Buttons */}
         <div className="grid grid-cols-2 gap-3">
           <button
             type="button"
@@ -362,14 +259,14 @@ export default function RegisterPage() {
           </button>
         </div>
 
-        {/* Sign In Link */}
+        {/* Sign Up Link */}
         <p className="mt-6 text-center text-sm text-gray-600">
-          Already have an account?{" "}
+          Don&apos;t have an account?{" "}
           <a
-            href="/login"
+            href="/register"
             className="font-semibold text-green-600 hover:text-green-700"
           >
-            Sign in
+            Sign up for free
           </a>
         </p>
       </div>

@@ -12,9 +12,11 @@ app.use(express.json());
 // Routes
 const userRoutes = require('./routes/userRoutes');
 const taskRoutes = require('./routes/taskRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 app.use('/api/users', userRoutes);
 app.use('/api/tasks', taskRoutes);  // Add this
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Task Manager API is running!' });
