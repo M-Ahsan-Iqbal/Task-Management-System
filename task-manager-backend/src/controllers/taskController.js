@@ -1,9 +1,8 @@
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
+import prisma from "../lib/prismaClient.js";
 
 // get all tasks of a user
 
-exports.getAllTasks = async (req, res) => {
+export const getAllTasks = async (req, res) => {
   try {
     const { userId } = req.params;
     const tasks = await prisma.task.findMany({
@@ -17,7 +16,7 @@ exports.getAllTasks = async (req, res) => {
 };
 
 // get single task
-exports.getTask = async (req, res) => {
+export const getTask = async (req, res) => {
   try {
     const { id } = req.params;
     const task = await prisma.task.findUnique({
@@ -33,7 +32,7 @@ exports.getTask = async (req, res) => {
 };
 
 // create a new task
-exports.createTask = async (req, res) => {
+export const createTask = async (req, res) => {
   try {
     const { title, description, status, priority, dueDate, userId } = req.body;
     const existingUser = await prisma.user.findUnique({
@@ -59,7 +58,7 @@ exports.createTask = async (req, res) => {
 };
 
 // update task
-exports.updateTask = async (req, res) => {
+export const updateTask = async (req, res) => {
     try {
         const { id } = req.params;
         const { title, description, status, priority, dueDate } = req.body;
@@ -80,7 +79,7 @@ exports.updateTask = async (req, res) => {
 };
 
 // delete task
-exports.deleteTask = async (req, res) => {
+export const deleteTask = async (req, res) => {
     try {
         const { id } = req.params;
         await prisma.task.delete({

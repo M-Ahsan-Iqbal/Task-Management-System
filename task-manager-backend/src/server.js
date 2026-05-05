@@ -1,6 +1,10 @@
-require('dotenv').config();
-const express = require('express');
-const cors = require('cors');
+import "dotenv/config";
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import userRoutes from "./routes/userRoutes.js";
+import taskRoutes from "./routes/taskRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -8,18 +12,15 @@ const PORT = process.env.PORT || 4000;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 // Routes
-const userRoutes = require('./routes/userRoutes');
-const taskRoutes = require('./routes/taskRoutes');
-const authRoutes = require('./routes/authRoutes');
+app.use("/api/users", userRoutes);
+app.use("/api/tasks", taskRoutes);
+app.use("/api/auth", authRoutes);
 
-app.use('/api/users', userRoutes);
-app.use('/api/tasks', taskRoutes);  // Add this
-app.use('/api/auth', authRoutes);
-
-app.get('/', (req, res) => {
-  res.json({ message: 'Task Manager API is running!' });
+app.get("/", (req, res) => {
+  res.json({ message: "Task Manager API is running!" });
 });
 
 app.listen(PORT, () => {

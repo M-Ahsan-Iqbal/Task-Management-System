@@ -2,7 +2,7 @@ import prisma from "../lib/prismaClient.js";
 
 
 // Get all users
-exports.getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
   try {
     const users = await prisma.user.findMany();
     res.json(users);
@@ -12,7 +12,7 @@ exports.getAllUsers = async (req, res) => {
 };
 
 // Create user
-exports.createUser = async (req, res) => {
+export const createUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
     
@@ -27,7 +27,7 @@ exports.createUser = async (req, res) => {
 };
 
 // Get single user
-exports.getUser = async (req, res) => {
+export const getUser = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await prisma.user.findUnique({
@@ -45,7 +45,7 @@ exports.getUser = async (req, res) => {
 };
 
 // Update user
-exports.updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, email } = req.body;
@@ -62,7 +62,7 @@ exports.updateUser = async (req, res) => {
 };
 
 // Delete user
-exports.deleteUser = async (req, res) => {
+export const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
     

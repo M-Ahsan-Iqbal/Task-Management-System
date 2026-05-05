@@ -2,18 +2,14 @@ import { Request, Response, NextFunction } from "express";
 import { verifyAccessToken } from "../utils/jwt";
 import { error } from "node:console";
 
-declare global {
-    namespace Express {
-        interface Request {
-            user?: {
-                userId: number;
-                email: string;
-            }
-        }
-    }
+export interface AuthenticatedRequest extends Request {
+  user?: {
+    userId: number;
+    email: string;
+  };
 }
 
-export function authenticateToken(req: Request, res: Response, next: NextFunction) {
+export function authenticateToken(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
         const authHeader = req.headers.authorization;
         const token = authHeader?.startsWith("Bearer ") ? authHeader.split(" ")[1] : req.cookies?.accessToken;
